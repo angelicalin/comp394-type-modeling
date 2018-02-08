@@ -50,8 +50,12 @@ public class PythonObject {
      * Constructs the MRO. Called only once, the first time we need the MRO; this class memoizes the
      * result (i.e. it remembers the list buildMRO() returned and keeps returning it).
      */
-    protected List<PythonObject> buildMRO() {
-        throw new UnsupportedOperationException("not implemented yet");
+    protected List<PythonObject> buildMRO(){
+
+        List<PythonObject> list = type.buildMRO();
+        list.add(0,this);
+       return list;
+        //throw new UnsupportedOperationException("not implemented yet");
     }
 
     /**
@@ -62,7 +66,12 @@ public class PythonObject {
      * @throws PythonAttributeException When there is no attribute on this object with that name.
      */
     public final PythonObject get(String attrName) throws PythonAttributeException {
-        throw new UnsupportedOperationException("not implemented yet");
+        for(PythonObject pobject : getMRO()){
+            if(pobject.attrs.containsKey(attrName)){
+                return pobject.attrs.get(attrName);
+            }
+        }
+        throw new PythonAttributeException(this,attrName);
     }
 
     /**
@@ -74,7 +83,7 @@ public class PythonObject {
      * @param value Its new value
      */
     public final void set(String attrName, PythonObject value) {
-        throw new UnsupportedOperationException("not implemented yet");
+        attrs.put(attrName,value);
     }
 
     @Override
