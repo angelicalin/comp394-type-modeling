@@ -25,9 +25,7 @@ class TestStaticTypes(TypeTest):
 
     def test_method_call_static_type_is_method_return_type(self):
         # p.getX() → double
-        self.assertEqual(
-            Type.double,
-            MethodCall(Variable("p", Graphics.point), "getX").static_type())
+        self.assertEqual(Type.double, MethodCall(Variable("p", Graphics.point), "getX").static_type())
 
     def test_object_instantiation_static_type_is_the_instantiate_type(self):
         # new Point() → Point

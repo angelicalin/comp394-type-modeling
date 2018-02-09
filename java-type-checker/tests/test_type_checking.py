@@ -56,10 +56,7 @@ class TestTypeChecking(TypeTest):
             JavaTypeError,
             "Wrong number of arguments for Point.getX(): expected 0, got 2",
             MethodCall(
-                Variable("p", Graphics.point),
-                "getX",
-                Literal("0.0", Type.double),
-                Literal("1.0", Type.double)))
+                Variable("p", Graphics.point),"getX",Literal("0.0", Type.double),Literal("1.0", Type.double)))
 
     def test_flags_too_few_arguments(self):
         """
@@ -135,10 +132,7 @@ class TestTypeChecking(TypeTest):
         self.assertCompileError(
             JavaTypeError,
             "Rectangle constructor expects arguments of type (Point, Size), but got (Point, boolean)",
-            ConstructorCall(
-                Graphics.rectangle,
-                Variable("p", Graphics.point),
-                Literal("true", Type.boolean)))
+            ConstructorCall(Graphics.rectangle, Variable("p", Graphics.point), Literal("true", Type.boolean)))
 
     def test_cannot_call_methods_on_primitives(self):
         """
@@ -148,8 +142,7 @@ class TestTypeChecking(TypeTest):
 
             x.hashCode()
         """
-        self.assertCompileError(
-            JavaTypeError,
+        self.assertCompileError(JavaTypeError,
             "Type int does not have methods",
             MethodCall(
                 Variable("x", Type.int),
@@ -177,16 +170,11 @@ class TestTypeChecking(TypeTest):
             rect.setFillColor(              // error here
                 rect.setStrokeColor(red));  // returns void
         """
-        self.assertCompileError(
-            JavaTypeError,
-            "Rectangle.setFillColor() expects arguments of type (Paint), but got (void)",
-            MethodCall(
-                Variable("rect", Graphics.rectangle),
-                "setFillColor",
-                MethodCall(
-                    Variable("rect", Graphics.rectangle),
-                    "setStrokeColor",
+        self.assertCompileError(JavaTypeError,"Rectangle.setFillColor() expects arguments of type (Paint), but got (void)",
+            MethodCall(Variable("rect", Graphics.rectangle),"setFillColor",
+                       MethodCall(Variable("rect", Graphics.rectangle),"setStrokeColor",
                     Variable("red", Graphics.color))))
+
 
     def test_passes_deep_expression(self):
         """
@@ -231,11 +219,7 @@ class TestTypeChecking(TypeTest):
             MethodCall(
                 Variable("group", Graphics.graphics_group),
                 "add",
-                ConstructorCall(
-                    Graphics.rectangle,
-                    ConstructorCall(Graphics.point,
-                        Literal("0.0", Type.double),
-                        Literal("0.0", Type.double)),
+                ConstructorCall(Graphics.rectangle,  ConstructorCall(Graphics.point,Literal("0.0", Type.double),Literal("0.0", Type.double)),
                     MethodCall(
                         Variable("window", Graphics.window),
                         "getFunky"))))

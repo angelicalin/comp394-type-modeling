@@ -75,10 +75,7 @@ class TestNull(TypeTest):
             MethodCall(
                 Variable("group", Graphics.graphics_group),
                 "add",
-                ConstructorCall(
-                    Graphics.rectangle,
-                    NullLiteral(),
-                    NullLiteral())))
+                ConstructorCall(Graphics.rectangle,NullLiteral(),NullLiteral())))
 
     def test_catch_wrong_type_in_deep_expression(self):
         """

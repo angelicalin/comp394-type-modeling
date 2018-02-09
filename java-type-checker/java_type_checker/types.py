@@ -12,7 +12,11 @@ class Type(object):
     def is_subtype_of(self, other):
         """ True if this type can be used where the other type is expected.
         """
-        return True  # TODO: implement
+        if (other == self) or (other in self.direct_supertypes):
+                return True
+        else:
+            for item in self.direct_supertypes:
+                return False or item.is_subtype_of(other)
 
     def is_supertype_of(self, other):
         """ Convenience counterpart to is_subtype_of().
@@ -23,13 +27,16 @@ class Type(object):
 class Constructor(object):
     """ The declaration of a Java constructor.
     """
+    is_runnable = True
     def __init__(self, argument_types=[]):
         self.argument_types = argument_types
+
 
 
 class Method(object):
     """ The declaration of a Java method.
     """
+    is_runnable = True
     def __init__(self, name, argument_types=[], return_type=None):
         self.name = name
         self.argument_types = argument_types
@@ -71,6 +78,9 @@ class NullType(Type):
     """
     def __init__(self):
         super().__init__("null")
+        self.is_instantiable=False
+    def method_named(self,name):
+        raise NoSuchMethod("Cannot invoke method {0}() on null".format(name))
 
 
 class NoSuchMethod(Exception):
